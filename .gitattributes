@@ -1,0 +1,11 @@
+* text eol=lf
+
+yarn.lock  linguist-generated
+
+*.re       linguist-language=Reason
+*.rei      linguist-language=Reason
+*.bs.js    linguist-generated
+
+/.vscode/*.json linguist-language=JSON5
+
+/schema.graphql linguist-generated
