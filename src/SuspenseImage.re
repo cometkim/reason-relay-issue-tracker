@@ -24,7 +24,7 @@ let imageResource =
   );
 
 [@react.component]
-let make = (~src, ~alt, ~className, ~title) => {
+let make = (~src, ~className, ~title) => {
   imageResource->ReactCache.read(src)->ignore;
-  <img alt src className title />;
+  <img src className title />;
 };
