@@ -2,7 +2,7 @@ open ReasonRelay;
 
 module IssueFragment = [%relay.fragment
   {|
-    fragment IssueActions__issue on Issue {
+    fragment IssueActions_issue on Issue {
       id
       closed
     }
@@ -20,7 +20,7 @@ module AddCommentMutation = [%relay.mutation
         commentEdge {
           node {
             id
-            ...IssueComment__comment
+            ...IssueComment_comment
           }
         }
       }

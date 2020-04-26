@@ -187,7 +187,7 @@ return {
                   (v3/*: any*/),
                   {
                     "kind": "FragmentSpread",
-                    "name": "IssueComment__comment",
+                    "name": "IssueComment_comment",
                     "args": null
                   }
                 ]
@@ -278,7 +278,7 @@ return {
     "operationKind": "mutation",
     "name": "IssueActionsAddCommentMutation",
     "id": null,
-    "text": "mutation IssueActionsAddCommentMutation(\n  $input: AddCommentInput!\n) {\n  addComment(input: $input) {\n    subject {\n      __typename\n      id\n    }\n    commentEdge {\n      node {\n        id\n        ...IssueComment__comment\n      }\n    }\n  }\n}\n\nfragment IssueComment__comment on Comment {\n  author {\n    __typename\n    login\n    avatarUrl\n    ... on Node {\n      id\n    }\n  }\n  body\n}\n",
+    "text": "mutation IssueActionsAddCommentMutation(\n  $input: AddCommentInput!\n) {\n  addComment(input: $input) {\n    subject {\n      __typename\n      id\n    }\n    commentEdge {\n      node {\n        id\n        ...IssueComment_comment\n      }\n    }\n  }\n}\n\nfragment IssueComment_comment on Comment {\n  author {\n    __typename\n    login\n    avatarUrl\n    ... on Node {\n      id\n    }\n  }\n  body\n}\n",
     "metadata": {}
   }
 };

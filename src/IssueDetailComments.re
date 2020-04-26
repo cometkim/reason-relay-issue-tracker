@@ -13,7 +13,7 @@ module IssueFragment = [%relay.fragment
         edges {
           node {
             id
-            ...IssueComment__comment
+            ...IssueComment_comment
           }
         }
       }

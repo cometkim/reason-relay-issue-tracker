@@ -7,7 +7,7 @@ module Types = {
       unit =>
       {
         .
-        "__$fragment_ref__IssueComment__comment": IssueComment__comment_graphql.t,
+        "__$fragment_ref__IssueComment_comment": IssueComment_comment_graphql.t,
       },
   };
   type fragment_comments_edges = {
@@ -160,7 +160,7 @@ return {
                 },
                 {
                   "kind": "FragmentSpread",
-                  "name": "IssueComment__comment",
+                  "name": "IssueComment_comment",
                   "args": null
                 }
               ]

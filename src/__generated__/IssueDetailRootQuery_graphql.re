@@ -10,7 +10,7 @@ module Types = {
       unit =>
       {
         .
-        "__$fragment_ref__IssueComment__comment": IssueComment__comment_graphql.t,
+        "__$fragment_ref__IssueComment_comment": IssueComment_comment_graphql.t,
       },
   };
   type response_node = [
@@ -169,7 +169,7 @@ return {
               (v6/*: any*/),
               {
                 "kind": "FragmentSpread",
-                "name": "IssueComment__comment",
+                "name": "IssueComment_comment",
                 "args": null
               }
             ]
@@ -246,7 +246,7 @@ return {
     "operationKind": "query",
     "name": "IssueDetailRootQuery",
     "id": null,
-    "text": "query IssueDetailRootQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Issue {\n      title\n      number\n      closed\n      url\n      ...IssueComment__comment\n    }\n    id\n  }\n}\n\nfragment IssueComment__comment on Comment {\n  author {\n    __typename\n    login\n    avatarUrl\n    ... on Node {\n      id\n    }\n  }\n  body\n}\n",
+    "text": "query IssueDetailRootQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Issue {\n      title\n      number\n      closed\n      url\n      ...IssueComment_comment\n    }\n    id\n  }\n}\n\nfragment IssueComment_comment on Comment {\n  author {\n    __typename\n    login\n    avatarUrl\n    ... on Node {\n      id\n    }\n  }\n  body\n}\n",
     "metadata": {}
   }
 };

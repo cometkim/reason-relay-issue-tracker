@@ -8,7 +8,7 @@ module IssueDetailRootQuery = [%relay.query
           number
           closed
           url
-          ...IssueComment__comment
+          ...IssueComment_comment
         }
       }
     }

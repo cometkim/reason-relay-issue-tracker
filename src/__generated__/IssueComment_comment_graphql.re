@@ -31,7 +31,7 @@ module Internal = {
 type t;
 type fragmentRef;
 type fragmentRefSelector('a) =
-  {.. "__$fragment_ref__IssueComment__comment": t} as 'a;
+  {.. "__$fragment_ref__IssueComment_comment": t} as 'a;
 external getFragmentRef: fragmentRefSelector('a) => fragmentRef = "%identity";
 
 module Utils = {};
@@ -41,7 +41,7 @@ type operationType = ReasonRelay.fragmentNode;
 let node: operationType = [%raw
   {json| {
   "kind": "Fragment",
-  "name": "IssueComment__comment",
+  "name": "IssueComment_comment",
   "type": "Comment",
   "metadata": null,
   "argumentDefinitions": [],

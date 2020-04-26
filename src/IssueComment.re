@@ -1,6 +1,6 @@
 module CommentFragment = [%relay.fragment
   {|
-    fragment IssueComment__comment on Comment {
+    fragment IssueComment_comment on Comment {
       author {
         __typename
         login

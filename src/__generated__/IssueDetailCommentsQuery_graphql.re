@@ -302,7 +302,7 @@ return {
     "operationKind": "query",
     "name": "IssueDetailCommentsQuery",
     "id": null,
-    "text": "query IssueDetailCommentsQuery(\n  $cursor: String\n  $count: Int = 10\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...IssueDetailComments_issue_1G22uz\n    id\n  }\n}\n\nfragment IssueComment__comment on Comment {\n  author {\n    __typename\n    login\n    avatarUrl\n    ... on Node {\n      id\n    }\n  }\n  body\n}\n\nfragment IssueDetailComments_issue_1G22uz on Issue {\n  comments(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        ...IssueComment__comment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n",
+    "text": "query IssueDetailCommentsQuery(\n  $cursor: String\n  $count: Int = 10\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...IssueDetailComments_issue_1G22uz\n    id\n  }\n}\n\nfragment IssueComment_comment on Comment {\n  author {\n    __typename\n    login\n    avatarUrl\n    ... on Node {\n      id\n    }\n  }\n  body\n}\n\nfragment IssueDetailComments_issue_1G22uz on Issue {\n  comments(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        ...IssueComment_comment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n",
     "metadata": {
       "derivedFrom": "IssueDetailComments_issue",
       "isRefetchableQuery": true
