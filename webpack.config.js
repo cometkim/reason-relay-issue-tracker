@@ -4,6 +4,7 @@ const url = require('url');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const { homepage } = require(`${process.cwd()}/package.json`);
 
@@ -72,11 +73,10 @@ module.exports = {
       },
     }),
     new InterpolateHtmlPlugin(HtmlWebpackPlugin, {
-      ...process.env,
       PUBLIC_URL: publicUrl || '',
     }),
+    new Dotenv(),
     new webpack.DefinePlugin({
-      ...process.env,
       __DEV__: JSON.stringify(isDevelopment),
     }),
     isProduction && new MiniCssExtractPlugin({
