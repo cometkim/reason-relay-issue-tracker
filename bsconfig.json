@@ -21,9 +21,13 @@
   "suffix": ".bs.js",
   "namespace": true,
   "bs-dependencies": [
+    "reason-promise",
     "reason-react",
     "reason-relay",
-    "bs-fetch"
+    "bs-dynamic-import",
+    "bs-fetch",
+    "bs-react-cache",
+    "bs-react-error-boundary"
   ],
   "ppx-flags": [
     "reason-relay/ppx"

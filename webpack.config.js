@@ -73,7 +73,7 @@ module.exports = {
     }),
     new InterpolateHtmlPlugin(HtmlWebpackPlugin, {
       ...process.env,
-      PUBLIC_URL: publicUrl,
+      PUBLIC_URL: publicUrl || '',
     }),
     new webpack.DefinePlugin({
       ...process.env,
