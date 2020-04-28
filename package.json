@@ -28,6 +28,7 @@
     "bs-fetch": "^0.5.2",
     "bs-react-cache": "^0.1.1",
     "bs-react-error-boundary": "^0.1.0",
+    "bs-webapi": "^0.15.9",
     "graphql": "^15.0.0",
     "prop-types": "^15.7.2",
     "react": "^0.0.0-experimental-aae83a4b9",

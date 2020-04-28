@@ -9,12 +9,15 @@ module IssueDetailRootQuery = [%relay.query
           closed
           url
           ...IssueComment_comment
+          ...IssueDetailComments_issue
+          ...IssueActions_issue
         }
       }
     }
   |}
 ];
 
+[@react.component]
 let make = (~token) => {
   let data = IssueDetailRootQuery.usePreloaded(~token, ());
   switch (data.node) {
@@ -38,9 +41,9 @@ let make = (~token) => {
         </a>
       </div>
       <IssueComment comment={issue.getFragmentRefs()} />
+      <IssueDetailComments issue={issue.getFragmentRefs()} />
+      <IssueActions issue={issue.getFragmentRefs()} />
     </div>
-  // <IssueDetailComments issue={issue} />
-  // <IssueActions issue={issue} />
   | _ => React.null
   };
 };

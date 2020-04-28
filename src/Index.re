@@ -2,7 +2,7 @@
 ReactExperimental.renderConcurrentRootAtElementWithId(
   <ReasonRelay.Context.Provider environment=RelayEnv.environment>
     <BsReactErrorBoundary.ErrorBoundary>
-      <App />
+      <RouterRenderer />
     </BsReactErrorBoundary.ErrorBoundary>
   </ReasonRelay.Context.Provider>,
   "root",

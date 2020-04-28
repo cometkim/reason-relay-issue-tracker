@@ -27,7 +27,8 @@
     "bs-dynamic-import",
     "bs-fetch",
     "bs-react-cache",
-    "bs-react-error-boundary"
+    "bs-react-error-boundary",
+    "bs-webapi"
   ],
   "ppx-flags": [
     "reason-relay/ppx"
