@@ -26,7 +26,7 @@
   "dependencies": {
     "bs-dynamic-import": "^0.4.0",
     "bs-fetch": "^0.5.2",
-    "bs-react-cache": "^0.1.1",
+    "bs-react-cache": "^0.2.1",
     "bs-react-error-boundary": "^0.1.0",
     "bs-webapi": "^0.15.9",
     "graphql": "^15.0.0",

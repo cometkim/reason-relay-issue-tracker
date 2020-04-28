@@ -40,15 +40,16 @@ let preload = (route: t) =>
   | Home => {
       component:
         ReactCache.make(
-          () => {
-            DynamicImport.(
-              import("./HomeRoot.bs.js")->resolve
-              <$> (
-                (module Component: PreloadableComponentType) => Component.make
+          ~loader=
+            () => {
+              DynamicImport.(
+                import("./HomeRoot.bs.js")->resolve
+                <$> (
+                  (module Component: PreloadableComponentType) => Component.make
+                )
               )
-            )
-          },
-          None,
+            },
+          (),
         ),
       token:
         Home(
@@ -63,15 +64,16 @@ let preload = (route: t) =>
   | IssueDetail(id) => {
       component:
         ReactCache.make(
-          () => {
-            DynamicImport.(
-              import("./IssueDetailRoot.bs.js")->resolve
-              <$> (
-                (module Component: PreloadableComponentType) => Component.make
+          ~loader=
+            () => {
+              DynamicImport.(
+                import("./IssueDetailRoot.bs.js")->resolve
+                <$> (
+                  (module Component: PreloadableComponentType) => Component.make
+                )
               )
-            )
-          },
-          None,
+            },
+          (),
         ),
       token:
         IssueDetail(

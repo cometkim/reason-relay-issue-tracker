@@ -12,15 +12,16 @@ module Image = {
 
 let imageResource =
   ReactCache.make(
-    src => {
-      Js.Promise.make((~resolve, ~reject) => {
-        let image = Image.make();
-        image->Image.setOnLoad(_ => resolve(. src));
-        image->Image.setOnError(exn => reject(. exn));
-        image->Image.setSource(src);
-      })
-    },
-    None,
+    ~loader=
+      src => {
+        Js.Promise.make((~resolve, ~reject) => {
+          let image = Image.make();
+          image->Image.setOnLoad(_ => resolve(. src));
+          image->Image.setOnError(exn => reject(. exn));
+          image->Image.setSource(src);
+        })
+      },
+    (),
   );
 
 [@react.component]
