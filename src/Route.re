@@ -53,7 +53,7 @@ let preload = (route: t) =>
         ),
       token:
         Home(
-          HomeRoot.HomeRootQuery.preload(
+          HomeRootQuery_graphql.preload(
             ~environment=RelayEnv.environment,
             ~variables={owner: "facebook", name: "relay"},
             ~fetchPolicy=StoreOrNetwork,
@@ -77,7 +77,7 @@ let preload = (route: t) =>
         ),
       token:
         IssueDetail(
-          IssueDetailRoot.IssueDetailRootQuery.preload(
+          IssueDetailRootQuery_graphql.preload(
             ~environment=RelayEnv.environment,
             ~variables={id: id},
             ~fetchPolicy=StoreOrNetwork,
