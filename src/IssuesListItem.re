@@ -10,7 +10,7 @@ module IssueFragment = [%relay.fragment
 [@react.component]
 let make = (~issue as issueRef) => {
   let issue = IssueFragment.use(issueRef);
-  <Link route={Route.issueDetail(issue.id)}>
+  <Router.Link to_={"/issue/" ++ issue.id}>
     {React.string(issue.title)}
-  </Link>;
+  </Router.Link>;
 };

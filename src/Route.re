@@ -1,96 +1,80 @@
-type t =
-  | Home
-  | IssueDetail(string);
+module type RootModule = (module type of Root);
 
-let fromUrl = (url: ReasonReactRouter.url) =>
-  switch (url.path) {
-  | [] => Some(Home)
-  | ["issue", id] => Some(IssueDetail(id))
-  | _ => None
-  };
-
-let parse = url => {
-  open Webapi;
-  let url = Url.make(url);
-  (
-    {
-      path: url->Url.pathname |> String.split_on_char('/'),
-      hash: url->Url.hash,
-      search: url->Url.search,
-    }: ReasonReactRouter.url
-  )
-  ->fromUrl;
-};
-
-type preloadToken =
-  | Home(HomeRootQuery_graphql.preloadToken)
-  | IssueDetail(IssueDetailRootQuery_graphql.preloadToken);
-
-type data('c) = {
-  component: ReactCache.t(unit, 'c),
-  token: preloadToken,
-};
-
-module type PreloadableComponentType = {
-  let make: (~token: preloadToken) => React.element;
-};
-
-let preload = (route: t) =>
-  switch (route) {
-  | Home => {
-      component:
-        ReactCache.make(
-          ~loader=
-            () => {
-              DynamicImport.(
-                import("./HomeRoot.bs.js")->resolve
-                <$> (
-                  (module Component: PreloadableComponentType) => Component.make
-                )
-              )
-            },
+let routes =
+  Router.Route.make(
+    ~component=
+      ReactCache.make(
+        ~loader=
+          () => {
+            DynamicImport.
+              (import("./Root.bs")->resolve)
+              /* <$> ((module Component: RootModule) => Component.make) */
+          },
+        (),
+      ),
+    ~matchUrl=_ => Some(),
+    ~prepare=
+      () => {
+        RootQuery_graphql.preload(
+          ~environment=RelayEnv.environment,
+          ~variables={owner: "facebook", name: "relay"},
+          ~fetchPolicy=StoreOrNetwork,
           (),
-        ),
-      token:
-        Home(
-          HomeRootQuery_graphql.preload(
-            ~environment=RelayEnv.environment,
-            ~variables={owner: "facebook", name: "relay"},
-            ~fetchPolicy=StoreOrNetwork,
+        )
+      },
+    ~render=(token, children) => <Root token> children </Root>,
+    ~subRoutes=[|
+      Router.Route.make(
+        ~component=
+          ReactCache.make(
+            ~loader=() => {DynamicImport.(import("./HomeRoot.bs")->resolve)},
             (),
           ),
-        ),
-    }
-  | IssueDetail(id) => {
-      component:
-        ReactCache.make(
-          ~loader=
-            () => {
-              DynamicImport.(
-                import("./IssueDetailRoot.bs.js")->resolve
-                <$> (
-                  (module Component: PreloadableComponentType) => Component.make
-                )
-              )
-            },
-          (),
-        ),
-      token:
-        IssueDetail(
-          IssueDetailRootQuery_graphql.preload(
-            ~environment=RelayEnv.environment,
-            ~variables={id: id},
-            ~fetchPolicy=StoreOrNetwork,
+        ~matchUrl=
+          url => {
+            switch (url.path) {
+            | [] => Some()
+            | _ => None
+            }
+          },
+        ~prepare=
+          () => {
+            HomeRootQuery_graphql.preload(
+              ~environment=RelayEnv.environment,
+              ~variables={owner: "facebook", name: "relay"},
+              ~fetchPolicy=StoreOrNetwork,
+              (),
+            )
+          },
+        ~render=(token, _) => <HomeRoot token />,
+        (),
+      ),
+      Router.Route.make(
+        ~component=
+          ReactCache.make(
+            ~loader=
+              () => {DynamicImport.(import("./IssueDetailRoot.bs")->resolve)},
             (),
           ),
-        ),
-    }
-  };
-
-type t';
-
-external make: string => t' = "%identity";
-external toString: t' => string = "%identity";
-
-let home = "/"->make;
-let issueDetail = id => ("/issue/" ++ id)->make;
+        ~matchUrl=
+          url => {
+            switch (url.path) {
+            | ["issue", id] => Some(id)
+            | _ => None
+            }
+          },
+        ~prepare=
+          id => {
+            IssueDetailRootQuery_graphql.preload(
+              ~environment=RelayEnv.environment,
+              ~variables={id: id},
+              ~fetchPolicy=StoreOrNetwork,
+              (),
+            )
+          },
+        ~render=(token, _) => <IssueDetailRoot token />,
+        (),
+      ),
+    |],
+    (),
+  );

@@ -14,7 +14,8 @@ module RootQuery = [%relay.query
   |}
 ];
 
-let make = (~token, children) => {
+[@react.component]
+let make = (~token, ~children) => {
   let data = RootQuery.usePreloaded(~token, ());
   switch (data.repository) {
   | None => React.string("No repository found")
