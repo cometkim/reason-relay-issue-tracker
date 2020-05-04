@@ -1089,10 +1089,10 @@ bs-react-cache@^0.3.0:
   resolved "https://registry.yarnpkg.com/bs-react-cache/-/bs-react-cache-0.3.0.tgz#ecb513755bc7048a5021de924ffcd1fb3bd1887a"
   integrity sha512-OSpUzS3+2MIMnAI/aX1TJvsF2oDkyLNVIMfWEljXcrhi4obpEm0YrG80M3XZeH/DZVUBIH8iIzQvDXpH6uGfLg==
 
-bs-react-error-boundary@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/bs-react-error-boundary/-/bs-react-error-boundary-0.1.0.tgz#f5853f2b95ebb3c77f4fbc149b59d7a7678e4131"
-  integrity sha512-YqMXlTwVu+Rxp5EwHbI024GNAldItC3XZp4mptMSQIdMbQJmmlt+YLweB3yP55iYuz3O8Y2Yn2O8hLc3SOZKmA==
+bs-react-error-boundary@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/bs-react-error-boundary/-/bs-react-error-boundary-0.3.0.tgz#ff80144abc2a89b7612c6f3c3ec150263cf59616"
+  integrity sha512-SFQalZkSQHfPgvZcYR90THR2oxJi+rVBa4POWOPUF6OvIed/85+OuXjmwnI7Cu/AdVgYMVyVmVaCzEPFKbdUhQ==
 
 bs-webapi@^0.15.9:
   version "0.15.9"
