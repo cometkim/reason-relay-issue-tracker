@@ -1,17 +1,80 @@
 module type RootModule = (module type of Root);
+module type HomeRootModule = (module type of HomeRoot);
+module type IssueDetailRootModule = (module type of IssueDetailRoot);
 
-let routes =
-  Router.Route.make(
-    ~component=
+module IssueTrackerRouter =
+  PolyRouter.Make({
+    type route('token) =
+      | HomeRoute: route(HomeRootQuery_graphql.preloadToken)
+      | IssueDetail(string)
+        : route(IssueDetailRootQuery_graphql.preloadToken);
+
+    let makePath: type token. route(token) => string =
+      route =>
+        switch (route) {
+        | HomeRoute => "/"
+        | IssueDetail(id) => "/issue/" ++ id
+        };
+
+    let homeRootCode =
       ReactCache.make(
         ~loader=
           () => {
-            DynamicImport.
-              (import("./Root.bs")->resolve)
-              /* <$> ((module Component: RootModule) => Component.make) */
+            DynamicImport.(
+              import("./HomeRoot.bs")->resolve
+              <$> ((module Component: HomeRootModule) => Component.make)
+            )
           },
         (),
-      ),
+      );
+
+    let issueDetailRootCode =
+      ReactCache.make(
+        ~loader=
+          () => {
+            DynamicImport.(
+              import("./IssueDetailRoot.bs")->resolve
+              <$> (
+                (module Component: IssueDetailRootModule) => Component.make
+              )
+            )
+          },
+        (),
+      );
+
+    let register:
+      type token.
+        route(token) =>
+        ReactCache.t(unit, React.component({. "token": token})) =
+      route =>
+        switch (route) {
+        | HomeRoute => homeRootCode
+        | IssueDetail(_) => issueDetailRootCode
+        };
+
+    let preload: type token. route(token) => token =
+      route => {
+        switch (route) {
+        | HomeRoute =>
+          HomeRootQuery_graphql.preload(
+            ~environment=RelayEnv.environment,
+            ~variables={owner: "facebook", name: "relay"},
+            ~fetchPolicy=StoreAndNetwork,
+            (),
+          )
+        | IssueDetail(id) =>
+          IssueDetailRootQuery_graphql.preload(
+            ~environment=RelayEnv.environment,
+            ~variables={id: id},
+            ~fetchPolicy=StoreAndNetwork,
+            (),
+          )
+        };
+      };
+  });
+
+let routes =
+  Router.Route.make(
     ~matchUrl=_ => Some(),
     ~prepare=
       () => {
@@ -25,11 +88,6 @@ let routes =
     ~render=(token, children) => <Root token> children </Root>,
     ~subRoutes=[|
       Router.Route.make(
-        ~component=
-          ReactCache.make(
-            ~loader=() => {DynamicImport.(import("./HomeRoot.bs")->resolve)},
-            (),
-          ),
         ~matchUrl=
           url => {
             switch (url.path) {
@@ -42,7 +100,7 @@ let routes =
             HomeRootQuery_graphql.preload(
               ~environment=RelayEnv.environment,
               ~variables={owner: "facebook", name: "relay"},
-              ~fetchPolicy=StoreOrNetwork,
+              ~fetchPolicy=StoreAndNetwork,
               (),
             )
           },
@@ -50,12 +108,6 @@ let routes =
         (),
       ),
       Router.Route.make(
-        ~component=
-          ReactCache.make(
-            ~loader=
-              () => {DynamicImport.(import("./IssueDetailRoot.bs")->resolve)},
-            (),
-          ),
         ~matchUrl=
           url => {
             switch (url.path) {

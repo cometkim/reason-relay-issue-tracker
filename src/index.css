@@ -134,3 +134,17 @@ code {
   border-color: #282c34;
   margin-right: 10px;
 }
+
+.RouteRenderer-pending {
+  position: absolute;
+  z-index: 1;
+  background-color: #fff;
+  animation: 0s linear 0.5s forwards makeVisible;
+  visibility: hidden;
+}
+
+@keyframes makeVisible {
+  to {
+    visibility: visible;
+  }
+}

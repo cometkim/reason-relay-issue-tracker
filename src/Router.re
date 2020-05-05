@@ -1,46 +1,17 @@
-/* type a('a) = Js.Promise.t(React.component('a));
-
-   type entry = {
-     url: ReasonReactRouter.url,
-     modulePath: string,
-   };
-
-   let hashUrl = (url: ReasonReactRouter.url) =>
-     url.path->Belt.List.reduce("", (a, b) => a ++ b);
-
-   let routeCache =
-     ReactCache.make(
-       ~loader=
-         (entry: entry) => {
-           /* let hash = entry.url->hashUrl; */
-           DynamicImport.(import(entry.modulePath)->resolve);
-         },
-       // FIXME type constructor
-       /* ~hashInput=(entry: entry) => entry.url->hashUrl, */
-       (),
-     ); */
-
 module Route = {
-  /* type props; */
-  // FIXME
-  type component;
-
   type t = {
     preload: ReasonReactRouter.url => unit,
-    component: ReactCache.t(unit, component),
     matchesUrl: ReasonReactRouter.url => bool,
     render: (ReasonReactRouter.url, React.element) => React.element,
     subRoutes: array(t),
   };
-
-  let getComponent = t => t.component;
 
   let getSubRoutes = t => t.subRoutes;
   let matchesUrl = (t, url) => t.matchesUrl(url);
   let preload = (t, url) => t.preload(url);
   let render = (t, url, children) => t.render(url, children);
 
-  let make = (~matchUrl, ~prepare, ~render, ~component, ~subRoutes=?, ()) => {
+  let make = (~matchUrl, ~prepare, ~render, ~subRoutes=?, ()) => {
     preload: url =>
       switch (matchUrl(url)) {
       | Some(params) =>
@@ -53,8 +24,6 @@ module Route = {
       | Some(_) => true
       | None => false
       },
-    // FIXME: Combine with render?
-    component,
     render: (url, children) =>
       switch (matchUrl(url)) {
       | Some(params) => render(prepare(params), children)
@@ -129,7 +98,6 @@ type disposeSubscriber = unit => unit;
 type routerContext = {
   get: unit => routeEntry,
   preload: string => unit,
-  preloadCode: string => unit,
   subscribe: subscriberCallback => disposeSubscriber,
 };
 
@@ -210,12 +178,6 @@ let make = routes => {
       ->matchRoutes(asRouterUrl, [||])
       ->Belt.Array.forEach(r => r->Route.preload(asRouterUrl));
     },
-    preloadCode: url => {
-      let asRouterUrl = url->Url.make->Url.toRouterUrl;
-      routes
-      ->matchRoutes(asRouterUrl, [||])
-      ->Belt.Array.forEach(r => r->Route.getComponent->ReactCache.preload());
-    },
     subscribe: cb => {
       let id = getNextId();
       subscribers->Js.Dict.set(id, Some(cb));
@@ -275,7 +237,6 @@ module RouteRenderer = {
 
     switch (routesReversed->Js.Array.shift) {
     | Some(r) =>
-      let component = r->Route.getComponent->ReactCache.read();
       // FIXME: How to render with component.make ??
       renderedContent := r->Route.render(routeEntry.url, React.null);
       let _ =
@@ -366,9 +327,6 @@ module Link = {
     let preload =
       React.useCallback2(() => {router.preload(to_)}, (to_, router));
 
-    let preloadRouteCode =
-      React.useCallback2(() => {router.preloadCode(to_)}, (to_, router));
-
     switch (render) {
     | Some(render) =>
       let linkUrl = to_->Url.make->Url.toRouterUrl;
@@ -395,7 +353,6 @@ module Link = {
           )
         }
         onClick=changeRoute
-        onMouseEnter={_ => preloadRouteCode()}
         onMouseDown={_ => preload()}
         onTouchStart={_ => preload()}>
         children
